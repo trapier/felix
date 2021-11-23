@@ -150,7 +150,7 @@ func (m *vxlanManager) OnUpdate(protoBufMsg interface{}) {
 		// In case the route changes type to one we no longer care about...
 		m.deleteRoute(msg.Dst)
 
-		if msg.Type == proto.RouteType_REMOTE_WORKLOAD && msg.IpPoolType == proto.IPPoolType_VXLAN {
+		if (msg.Type == proto.RouteType_REMOTE_WORKLOAD || msg.Type == proto.RouteType_REMOTE_TUNNEL) && msg.IpPoolType == proto.IPPoolType_VXLAN {
 			logrus.WithField("msg", msg).Debug("VXLAN data plane received route update")
 			m.routesByDest[msg.Dst] = msg
 			m.routesDirty = true
